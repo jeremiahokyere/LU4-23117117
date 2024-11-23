@@ -1,3 +1,5 @@
+import csv
+
 class Student:
     def __init__(self, gebruikersnaam, wachtwoord, voornaam, achternaam, leeftijd):
         self.gebruikersnaam = gebruikersnaam
@@ -11,3 +13,21 @@ class Docent:
     def __init__(self, gebruikersnaam, name):
         self.gebruikersnaam = gebruikersnaam
         self.name = name
+
+def load_studenten(file_path):
+    studenten = {}
+    try:
+        with open(file_path, newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                student = Student(
+                    gebruikersnaam=row["gebruikersnaam"],
+                    wachtwoord=row["wachtwoord"],
+                    voornaam=row["voornaam"],
+                    achternaam=row["achternaam"],
+                    leeftijd=int(row["leeftijd"])
+                )
+                studenten[row["gebruikersnaam"]] = student
+    except FileNotFoundError:
+        print(f"Bestand {file_path} begin met een nieuwe database")
+    return studenten
