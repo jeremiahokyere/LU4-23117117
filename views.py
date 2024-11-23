@@ -43,7 +43,26 @@ class StudentDashboard(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
+        total_points = self.student.calculate_study_points()
+        remaining_points = 60 - total_points
+
         tk.Label(self, text=f"Welkom, {self.student.voornaam}!", font=("Arial", 20), fg="white", bg="#222").pack(pady=10)
+        tk.Label(self, text=f"Studiepunten: {total_points}/60", font=("Arial", 16), fg="white", bg="#222").pack()
+        tk.Label(self, text=f"Je hebt {remaining_points} meer studiepunten nodig om je propedeuse te halen.",
+                 font=("Arial", 14), fg="white", bg="#222").pack(pady=10)
+
+        tk.Label(self, text="Jou examen:", font=("Arial", 16), fg="white", bg="#222").pack()
+
+        for grade in self.student.grades:
+            frame = tk.Frame(self, bg="#333", bd=2, relief="solid", padx=10, pady=10)
+            frame.pack(pady=5, fill="x")
+            tk.Label(frame, text=f"{grade['subject']} - {grade['grade']}", font=("Arial", 14), fg="white",bg="#333").pack()
+            frame.bind("<Button-1>", lambda e, g=grade: self.show_grade_details(g))
+
+        tk.Button(self, text="Log uit",command=lambda: self.master.switch_frame(LoginPage, self.master.studenten, self.master.docenten),bg="#444", fg="white", font=("Arial", 12)).pack(pady=20)
+
+    def show_grade_details(self, grade):
+        messagebox.showinfo("Examen info",f"Toets: {grade['subject']}\nCijfer: {grade['grade']}\nDatum: {grade['date']}\nStatus: {grade['status']}\nPogingen: {grade['attempts']}\nFeedback: {grade['description']}\nDocent: {grade['docent']}")
 
 
 class DocentDashboard(tk.Frame):

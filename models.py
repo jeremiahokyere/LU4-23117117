@@ -22,6 +22,12 @@ class Student:
             "docent": docent
         })
 
+    def view_grades(self):
+        return self.grades
+
+    def calculate_study_points(self):
+        return sum(10 for grade in self.grades if grade["grade"] >= 5.5)
+
 class Docent:
     def __init__(self, gebruikersnaam, name):
         "Docenten class en de attributen"
