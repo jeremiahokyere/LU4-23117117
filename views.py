@@ -194,6 +194,8 @@ class DocentDashboard(tk.Frame):
         attempts_entry = tk.Entry(popup, width=10)
         attempts_entry.pack(pady=5)
 
+        tk.Label(popup, text="Feedback:", font=("Arial", 12),
+        fg="white", bg="#222").pack(pady=5)
         description = tk.Text(popup,width=30, height=5)
         description.pack(pady=10)
 
