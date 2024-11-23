@@ -2,6 +2,7 @@ import csv
 
 class Student:
     def __init__(self, gebruikersnaam, wachtwoord, voornaam, achternaam, leeftijd):
+        """student class en alle attributen"""
         self.gebruikersnaam = gebruikersnaam
         self.wachtwoord = wachtwoord
         self.voornaam = voornaam
@@ -11,9 +12,11 @@ class Student:
 
 class Docent:
     def __init__(self, gebruikersnaam, name):
+        "Docenten class en de attributen"
         self.gebruikersnaam = gebruikersnaam
         self.name = name
 
+#laden van studenten
 def load_studenten(file_path):
     studenten = {}
     try:

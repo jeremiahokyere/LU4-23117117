@@ -56,3 +56,36 @@ class DocentDashboard(tk.Frame):
     def create_widgets(self):
         tk.Label(self, text="Docent Dashboard", font=("Arial", 20), fg="white", bg="#222").pack(pady=10)
 
+        student_names = [f"{s.voornaam} {s.achternaam}" for s in self.studenten.values()]
+        self.student_selection = ttk.Combobox(self, values=student_names, state="readonly")
+        self.student_selection.pack(pady=10)
+        self.student_selection.bind("<<ComboboxSelected>>", self.load_student_grades)
+
+        self.grades_frame = tk.Frame(self, bg="#222")
+        self.grades_frame.pack(pady=10, fill="both", expand=True)
+
+        tk.Button(self, text="Nieuwe Examen", command=self.add_new_grade, bg="#444", fg="white").pack(pady=10)
+        tk.Button(self, text="Log uit",command=lambda: self.master.switch_frame(LoginPage, self.studenten, self.master.docenten), bg="#444",fg="white").pack(pady=10)
+
+    def load_student_grades(self, _):
+        self.grades_frame.destroy()
+        self.grades_frame = tk.Frame(self, bg="#222")
+        self.grades_frame.pack(pady=10, fill="both", expand=True)
+
+        selected_student_name = self.student_selection.get()
+        self.selected_student = next((s for s in self.studenten.values() if f"{s.voornaam} {s.achternaam}" == selected_student_name), None)
+
+        if not self.selected_student:
+            return
+        for grade in self.selected_student.grades:
+            frame = tk.Frame(self.grades_frame, bg="#333", bd=2, relief="solid", padx=10, pady=10)
+            frame.pack(pady=5, fill="x")
+            tk.Label(frame, text=f"{grade['subject']} - {grade['grade']}", font=("Arial", 14), fg="white", bg="#333").pack()
+            tk.Button(frame, text="Bewerk", command=lambda g=grade: self.edit_grade(g), bg="#555", fg="white").pack(side="right", padx=5)
+            tk.Button(frame, text="Verwijder", command=lambda g=grade: self.delete_grade(g), bg="#555", fg="white").pack(side="right")
+
+    def add_new_grade(self):
+        if not self.selected_student:
+            messagebox.showerror("Error", "Selecteer eerst een student")
+            return
+        self.grade_form_popup()

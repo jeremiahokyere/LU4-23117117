@@ -9,7 +9,7 @@ class App(tk.Tk):
         self.geometry("1000x700")
         self.configure(bg="#222")
 
-        # Laad studenten en docenten
+        # Laad studenten via csv bestand en docent
         self.studenten = load_studenten("studenten.csv")
         self.docenten = {
             "docent": Docent("docent", "Chris Dina"),
