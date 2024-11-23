@@ -6,3 +6,8 @@ class Student:
         self.achternaam = achternaam
         self.leeftijd = leeftijd
         self.grades = []
+
+class Docent:
+    def __init__(self, gebruikersnaam, name):
+        self.gebruikersnaam = gebruikersnaam
+        self.name = name
