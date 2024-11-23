@@ -10,6 +10,18 @@ class Student:
         self.leeftijd = leeftijd
         self.grades = []
 
+    def add_grade(self, subject, grade, date, attempts, description, docent):
+        status = "Behaald" if grade >= 5.5 else "Niet behaald"
+        self.grades.append({
+            "subject": subject,
+            "grade": grade,
+            "date": date,
+            "attempts": attempts,
+            "status": status,
+            "description": description,
+            "docent": docent
+        })
+
 class Docent:
     def __init__(self, gebruikersnaam, name):
         "Docenten class en de attributen"

@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
+from datetime import datetime
 
 class LoginPage(tk.Frame):
     def __init__(self, master, studenten, docenten):
@@ -89,3 +90,76 @@ class DocentDashboard(tk.Frame):
             messagebox.showerror("Error", "Selecteer eerst een student")
             return
         self.grade_form_popup()
+
+    def grade_form_popup(self, grade=None):
+        popup = tk.Toplevel(self)
+        popup.title("Bewerk/Voeg examen toe")
+        popup.geometry("400x500")
+        popup.configure(bg="#222")
+
+        tk.Label(popup, text=f"Student: {self.selected_student.voornaam} {self.selected_student.achternaam}", font=("Arial", 14), fg="white", bg="#222").pack(pady=10)
+
+        tk.Label(popup, text="Toets:", font=("Arial", 12), fg="white", bg="#222").pack(pady=5)
+        subject_entry = tk.Entry(popup, width=30)
+        subject_entry.pack(pady=5)
+
+        tk.Label(popup, text="Cijfer:", font=("Arial", 12), fg="white", bg="#222").pack(pady=5)
+        grade_entry = tk.Entry(popup, width=10)
+        grade_entry.pack(pady=5)
+
+        tk.Label(popup, text="Datum:", font=("Arial", 12), fg="white", bg="#222").pack(pady=5)
+        date_entry = tk.Entry(popup, width=15)
+        date_entry.pack(pady=5)
+
+        tk.Label(popup, text="Pogingen:", font=("Arial", 12), fg="white", bg="#222").pack(pady=5)
+        attempts_entry = tk.Entry(popup, width=10)
+        attempts_entry.pack(pady=5)
+
+        description = tk.Text(popup,width=30, height=5)
+        description.pack(pady=10)
+
+        if grade:
+            subject_entry.insert(0, grade["subject"])
+            grade_entry.insert(0, grade["grade"])
+            date_entry.insert(0, grade["date"])
+            attempts_entry.insert(0, grade["attempts"])
+            description.insert("1.0", grade["description"])
+
+        def save():
+            subject = subject_entry.get()
+            try:
+                grade_val = float(grade_entry.get())
+                if not 0 <= grade_val <= 10:
+                    raise ValueError
+            except ValueError:
+                messagebox.showerror("Error", "Cijfer moet een getal zijn tussen de 1-10.")
+                return
+
+            try:
+                datetime.strptime(date_entry.get(), "%d-%m-%Y")
+            except ValueError:
+                messagebox.showerror("Error", "Geen geldige datum input. gebruik dd-mm-yyyy.")
+                return
+
+            attempts = attempts_entry.get()
+            if not attempts.isdigit() or int(attempts) <= 0:
+                messagebox.showerror("Error", "Pogingen moeten een positieve integer zijn")
+                return
+
+            if grade:
+                grade.update({
+                    "subject": subject,
+                    "grade": grade_val,
+                    "date": date_entry.get(),
+                    "attempts": int(attempts),
+                    "description": description.get("1.0", "end").strip(),
+                    "status": "Behaald" if grade_val >= 5.5 else "Niet behaald",
+                })
+            else:
+                self.selected_student.add_grade(subject, grade_val, date_entry.get(), int(attempts), description.get("1.0", "end").strip(), self.docent_name)
+
+            self.load_student_grades(None)
+            popup.destroy()
+            messagebox.showinfo("Gelukt!", "Toets Opgeslagen")
+
+        tk.Button(popup, text="Opslaan", command=save, bg="#444", fg="white").pack(pady=10)
