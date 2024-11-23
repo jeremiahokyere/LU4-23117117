@@ -91,6 +91,14 @@ class DocentDashboard(tk.Frame):
             return
         self.grade_form_popup()
 
+    def edit_grade(self, grade):
+        self.grade_form_popup(grade)
+
+    def delete_grade(self, grade):
+        self.selected_student.grades.remove(grade)
+        self.load_student_grades(None)
+        messagebox.showinfo("Gelukt!", "Examen Verwijderd")
+
     def grade_form_popup(self, grade=None):
         popup = tk.Toplevel(self)
         popup.title("Bewerk/Voeg examen toe")
