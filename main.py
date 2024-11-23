@@ -24,6 +24,13 @@ class App(tk.Tk):
         self.current_frame = frame_class(self, *args)
         self.current_frame.pack(expand=True, fill="both")
 
-if __name__ == "__main__":
-    app = App()
-    app.mainloop()
+while True:
+        app = App()
+        app.mainloop()
+
+        restart = (input
+        ("Wil je de applicatie opnieuw starten? (ja/nee): ")
+        .strip().lower())
+        if restart != "ja":
+            print("De applicatie wordt afgesloten.")
+            break

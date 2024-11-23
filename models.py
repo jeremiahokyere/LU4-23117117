@@ -1,7 +1,8 @@
 import csv
 
 class Student:
-    def __init__(self, gebruikersnaam, wachtwoord, voornaam, achternaam, leeftijd):
+    def __init__(self, gebruikersnaam, wachtwoord,
+                 voornaam, achternaam, leeftijd):
         """student class en alle attributen"""
         self.gebruikersnaam = gebruikersnaam
         self.wachtwoord = wachtwoord
@@ -10,7 +11,8 @@ class Student:
         self.leeftijd = leeftijd
         self.grades = []
 
-    def add_grade(self, subject, grade, date, attempts, description, docent):
+    def add_grade(self, subject, grade,
+                  date, attempts, description, docent):
         status = "Behaald" if grade >= 5.5 else "Niet behaald"
         self.grades.append({
             "subject": subject,
