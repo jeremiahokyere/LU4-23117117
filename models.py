@@ -54,3 +54,22 @@ def load_studenten(file_path):
     except FileNotFoundError:
         print(f"Bestand {file_path} begin met een nieuwe database")
     return studenten
+
+def save_grades_to_csv(file_path, studenten):
+    """Slaat alle cijfers van alle studenten op in cijfers.csv."""
+    with open(file_path, mode="w", newline="", encoding="utf-8") as csvfile:
+        fieldnames = ["gebruikersnaam", "subject", "grade", "date", "attempts", "status", "description", "docent"]
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        for student in studenten.values():
+            for grade in student.grades:
+                writer.writerow({
+                    "gebruikersnaam": student.gebruikersnaam,
+                    "subject": grade["subject"],
+                    "grade": grade["grade"],
+                    "date": grade["date"],
+                    "attempts": grade["attempts"],
+                    "status": grade["status"],
+                    "description": grade["description"],
+                    "docent": grade["docent"]
+                })

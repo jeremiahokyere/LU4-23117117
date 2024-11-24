@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from datetime import datetime
+from models import save_grades_to_csv
 
 class LoginPage(tk.Frame):
     def __init__(self, master, studenten, docenten):
@@ -40,7 +41,7 @@ class LoginPage(tk.Frame):
             self.studenten[gebruikersnaam])
         elif (gebruikersnaam in self.docenten and
               gebruikersnaam in self.docenten and
-              wachtwoord == "password1"):
+              wachtwoord == "docent"):
             self.master.switch_frame(DocentDashboard,
             self.studenten,self.docenten[gebruikersnaam].name)
         else:
@@ -160,6 +161,7 @@ class DocentDashboard(tk.Frame):
 
     def delete_grade(self, grade):
         self.selected_student.grades.remove(grade)
+        save_grades_to_csv("cijfers.csv", self.master.studenten)
         self.load_student_grades(None)
         messagebox.showinfo("Gelukt!", "Examen Verwijderd")
 
@@ -246,6 +248,7 @@ class DocentDashboard(tk.Frame):
                 grade_val, date_entry.get(), int(attempts),
                 description.get("1.0", "end").strip(), self.docent_name)
 
+            save_grades_to_csv("cijfers.csv", self.master.studenten)
             self.load_student_grades(None)
             popup.destroy()
             messagebox.showinfo("Gelukt!", "Toets Opgeslagen")
