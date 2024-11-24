@@ -88,7 +88,7 @@ class StudentDashboard(tk.Frame):
     def show_grade_details(self, grade):
         messagebox.showinfo(
             "Examen info",f"Toets: {grade['subject']}\nCijfer: "
-            f"{grade['grade']}\nDatum: {grade['date']}\n"
+            f"{grade['grade']}\nToetsdatum: {grade['date']}\n"
             f"Status: {grade['status']}\n"
             f"Pogingen: {grade['attempts']}\nFeedback: {grade['description']}\n"
             f"Docent: {grade['docent']}")
@@ -140,8 +140,8 @@ class DocentDashboard(tk.Frame):
             frame = tk.Frame(self.grades_frame,
             bg="#333", bd=2, relief="solid", padx=10, pady=10)
             frame.pack(pady=5, fill="x")
-            tk.Label(frame, text=f"{grade['subject']} - "
-            f"{grade['grade']}",
+            tk.Label(frame, text=f"{self.selected_student.voornaam}"
+            f" {self.selected_student.achternaam} - {grade['subject']}",
             font=("Arial", 14), fg="white", bg="#333").pack()
             (tk.Button(frame, text="Bewerk", command=lambda g=grade:
             self.edit_grade(g), bg="#555", fg="white").pack
@@ -186,7 +186,7 @@ class DocentDashboard(tk.Frame):
         grade_entry = tk.Entry(popup, width=10)
         grade_entry.pack(pady=5)
 
-        tk.Label(popup, text="Datum:", font=("Arial", 12),
+        tk.Label(popup, text="Toetsdatum:", font=("Arial", 12),
         fg="white", bg="#222").pack(pady=5)
         date_entry = tk.Entry(popup, width=15)
         date_entry.pack(pady=5)
